@@ -46,6 +46,8 @@ Purpose : Reimplementation of printf, puts and
 #include <stdarg.h>
 #include <stdio.h>
 
+#ifndef SEGGER_DONT_REDEFINE_PRINTF
+
 int printf(const char *fmt, ...) {
     char buffer[256];
     va_list args;
@@ -60,14 +62,16 @@ int puts(const char *s) {
     return SEGGER_RTT_WriteString(0, s);
 }
 
+int __getchar() {
+    return SEGGER_RTT_WaitKey();
+}
+
 int __putchar(int x, void *ctx) {
     (void)ctx;
     SEGGER_RTT_Write(0, (char *)&x, 1);
     return x;
 }
 
-int __getchar() {
-    return SEGGER_RTT_WaitKey();
-}
+#endif
 
 /****** End Of File *************************************************/
