@@ -1,4 +1,5 @@
-# Segger RTT printf implementation module
+set(CMAKE_UNITY_BUILD true)
+set(CMAKE_UNITY_BUILD_BATCH_SIZE 16)
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
