@@ -64,8 +64,6 @@ Revision: $Rev: 12804 $
 
     #define SEGGER_RTT_PRINTF_BUFFER_SIZE (1024u) // Size of buffer for RTT printf to bulk-send chars via RTT     (Default: 64)
 
-    #define SEGGER_RTT_MODE_DEFAULT SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL // Mode for pre-initialized terminal channel (buffer 0)
-
     /*********************************************************************
 *
 *       RTT memcpy configuration
@@ -78,13 +76,14 @@ Revision: $Rev: 12804 $
 *       This is may be required with memory access restrictions, 
 *       such as on Cortex-A devices with MMU.
 */
-    #define SEGGER_RTT_MEMCPY_USE_BYTELOOP 0 // 0: Use memcpy/SEGGER_RTT_MEMCPY, 1: Use a simple byte-loop
-                                             //
-// Example definition of SEGGER_RTT_MEMCPY to external memcpy with GCC toolchains and Cortex-A targets
-//
-//#if ((defined __SES_ARM) || (defined __CROSSWORKS_ARM) || (defined __GNUC__)) && (defined (__ARM_ARCH_7A__))
-//  #define SEGGER_RTT_MEMCPY(pDest, pSrc, NumBytes)      SEGGER_memcpy((pDest), (pSrc), (NumBytes))
-//#endif
+    #define SEGGER_RTT_MEMCPY_USE_BYTELOOP                                                                                 \
+        0   // 0: Use memcpy/SEGGER_RTT_MEMCPY, 1: Use a simple byte-loop \
+            //                                                \
+            // Example definition of SEGGER_RTT_MEMCPY to external memcpy with GCC toolchains and Cortex-A targets         \
+            //                                                                                                             \
+            //#if ((defined __SES_ARM) || (defined __CROSSWORKS_ARM) || (defined __GNUC__)) && (defined (__ARM_ARCH_7A__)) \
+            //  #define SEGGER_RTT_MEMCPY(pDest, pSrc, NumBytes)      SEGGER_memcpy((pDest), (pSrc), (NumBytes))           \
+            //#endif
 
 //
 // Target is not allowed to perform other RTT operations while string still has not been stored completely.
