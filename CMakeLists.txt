@@ -15,7 +15,7 @@ set_source_files_properties(${sources} PROPERTIES LANGUAGE CXX)
 set_source_files_properties(${headers} PROPERTIES LANGUAGE CXX)
 
 add_library(printf_impl_SeggerRTT ${sources})
-target_include_directories(printf_impl_SeggerRTT PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(printf_impl_SeggerRTT PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_precompile_headers(
   printf_impl_SeggerRTT
