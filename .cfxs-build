@@ -1,7 +1,36 @@
 printf("Load SeggerRTT")
+local config = ...
+local CONFIG_TEMPLATE = [[
+{
+    mode = <"blocking" | "non_blocking_skip" | "non_blocking_trim">,
+        -- "blocking"          - Wait until there is space in the buffer
+        -- "non_blocking_skip" - Do not block, output nothing
+        -- "non_blocking_trim" - Do not block, output as much as fits
+}
+]]
+assert(config != nil, "Import arguments not defined\n"..CONFIG_TEMPLATE)
+assert(config.mode != nil, "mode not defined\n"..CONFIG_TEMPLATE)
+assert(type(config.mode) == "string", "mode is not a string\n"..CONFIG_TEMPLATE)
+
 segger_rtt = create_library("Segger-RTT")
 segger_rtt:add_include_paths("public", "./include")
 segger_rtt:add_sources({
     "./src/**.c",
     "./src/**.cpp"
 })
+
+local mode_map = {
+    ["blocking"]          = "SEGGER_RTT_MODE_NO_BLOCK_SKIP",
+    ["non_blocking_skip"] = "SEGGER_RTT_MODE_NO_BLOCK_TRIM",
+    ["non_blocking_trim"] = "SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL",
+}
+
+
+local mode = mode_map[config.mode]
+assert(mode ~= nil, "invalid mode: "..config.mode)
+segger_rtt:add_definitions("private", {
+    "SEGGER_DONT_REDEFINE_PRINTF=1",
+    "SEGGER_RTT_MODE_DEFAULT="..mode_map[config.mode],
+})
+
+printf(" - Selected mode: "..config.mode)
