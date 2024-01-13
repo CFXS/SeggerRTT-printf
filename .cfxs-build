@@ -1,5 +1,5 @@
 printf("Load SeggerRTT")
-segger_rtt = create_library("Segger RTT")
+segger_rtt = create_library("Segger-RTT")
 segger_rtt:add_include_paths("public", "./include")
 segger_rtt:add_sources({
     "./src/**.c",
