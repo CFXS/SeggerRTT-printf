@@ -1399,10 +1399,14 @@ int SEGGER_RTT_AllocUpBuffer(const char* sName, void* pBuffer, unsigned BufferSi
 int SEGGER_RTT_ConfigUpBuffer(unsigned BufferIndex, const char* sName, void* pBuffer, unsigned BufferSize, unsigned Flags) {
     int r;
 
+    if(Flags == 0) {
+        Flags = SEGGER_RTT_MODE_DEFAULT;
+    }
+
     INIT();
     if (BufferIndex < (unsigned)_SEGGER_RTT.MaxNumUpBuffers) {
         SEGGER_RTT_LOCK();
-        if (BufferIndex > 0u) {
+        if (BufferIndex > 0u && BufferIndex < SEGGER_RTT_MAX_NUM_UP_BUFFERS) {
             _SEGGER_RTT.aUp[BufferIndex].sName        = sName;
             _SEGGER_RTT.aUp[BufferIndex].pBuffer      = (char*)pBuffer;
             _SEGGER_RTT.aUp[BufferIndex].SizeOfBuffer = BufferSize;
@@ -1449,7 +1453,7 @@ int SEGGER_RTT_ConfigDownBuffer(unsigned BufferIndex, const char* sName, void* p
     INIT();
     if (BufferIndex < (unsigned)_SEGGER_RTT.MaxNumDownBuffers) {
         SEGGER_RTT_LOCK();
-        if (BufferIndex > 0u) {
+        if (BufferIndex > 0u && BufferIndex < SEGGER_RTT_MAX_NUM_DOWN_BUFFERS) {
             _SEGGER_RTT.aDown[BufferIndex].sName        = sName;
             _SEGGER_RTT.aDown[BufferIndex].pBuffer      = (char*)pBuffer;
             _SEGGER_RTT.aDown[BufferIndex].SizeOfBuffer = BufferSize;
